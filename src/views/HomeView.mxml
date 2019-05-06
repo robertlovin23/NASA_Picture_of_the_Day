@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<s:View title="Home" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark">
+        <s:Label width="80%" horizontalCenter="0" textAlign="center" paddingTop="20">
+                <s:text>Welcome to The NASA Image of the Day Repository!</s:text>
+        </s:Label>
+        <s:Image source="@Embed('/assets/nasalogo.png')" verticalCenter="0" horizontalCenter="0" smooth="true" width="80%"></s:Image>
+</s:View>

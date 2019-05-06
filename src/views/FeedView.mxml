@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<s:View title = "{feedStatus}" xmlns:fx="http://ns.adobe.com/mxml/2009" xmlns:s="library://ns.adobe.com/flex/spark" creationComplete = "init()">
+
+
+    <fx:Script>
+    <![CDATA[
+        import flashx.textLayout.conversion.TextConverter;
+
+        [Bindable] private var feedUrl:String = "http://www.nasa.gov/rss/dyn/lg_image_of_the_day.rss";
+        [Bindable] private var feedStatus:String = "";
+        private function init():void {
+            feedStatus = "Loading RSS...";
+            feedService.send();
+        }
+        private function onFeedResult(e:Event):void {
+            feedStatus = feedService.lastResult.rss.channel.title;
+            feedList.setSelectedIndex(0);
+        }
+        private function onFeedFault(e:Event):void {
+            feedStatus = "Loading the RSS failed";
+        }
+    ]]>
+    </fx:Script>
+
+    <fx:Declarations>
+        <s:HTTPService id = "feedService" url = "{feedUrl}" fault = "{onFeedFault(event)}" result = "{onFeedResult(event)}"/>
+    </fx:Declarations>
+
+    <s:layout>
+        <s:VerticalLayout gap = "10" paddingTop = "10" paddingBottom = "10" paddingLeft = "10" paddingRight = "10"></s:VerticalLayout>
+    </s:layout>
+
+    <s:List id = "feedList" dataProvider = "{feedService.lastResult.rss.channel.item}" labelField = "title" width = "100%" height = "100%"/>
+    <s:RichText textFlow = "{TextConverter.importToFlow(feedList.selectedItem.description, TextConverter. TEXT_FIELD_HTML_FORMAT)}" height = "100%" width="100%"/>
+    <s:Button id = "feedButton" label = "Read Full Article" click = "{navigateToURL(new URLRequest(feedList.selectedItem.link));}" width = "100%"/>
+</s:View>
